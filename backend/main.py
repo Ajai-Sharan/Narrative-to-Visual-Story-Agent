@@ -219,10 +219,22 @@ def call_text_to_video(prompt: str, seed: int, timeout_seconds: int = 600) -> Vi
 app = FastAPI(title="Narrative-to-Visual Story Agent")
 
 frontend_origin = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173")
+allow_all_cors = str(os.getenv("CORS_ALLOW_ALL", "false")).strip().lower() in {
+    "1",
+    "true",
+    "yes",
+    "on"
+}
+if frontend_origin.strip() == "*":
+    allow_all_cors = True
+
+origins = [o.strip() for o in frontend_origin.split(",") if o.strip()]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[frontend_origin],
-    allow_credentials=True,
+    allow_origins=["*"] if allow_all_cors else origins,
+    # Browsers reject `Access-Control-Allow-Origin: *` when credentials are included,
+    # so disable credentials only for the allow-all mode.
+    allow_credentials=False if allow_all_cors else True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
