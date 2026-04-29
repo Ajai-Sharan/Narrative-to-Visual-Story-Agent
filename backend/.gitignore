@@ -1,0 +1,11 @@
+# Backend env/venv
+.env
+.venv/
+
+# Generated assets (keep placeholder)
+generated/*
+!generated/.gitkeep
+
+# Python cache
+__pycache__/
+*.pyc

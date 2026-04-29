@@ -1,0 +1,12 @@
+# Frontend env
+.env
+.env.*
+
+# Node
+node_modules/
+
+# Frontend build output
+dist/
+
+# Local caches
+*.log

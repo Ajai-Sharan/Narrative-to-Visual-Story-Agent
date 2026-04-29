@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional animated GIF background overlay (repeating texture).
+   You can override the GIF via VITE_BG_GIF_URL in frontend/.env */
+.bg-gif-overlay {
+  background-image: var(--bg-gif-url);
+  background-repeat: repeat;
+  background-size: 360px 360px;
+  background-position: 0 0;
+  opacity: 0.08;
+  mix-blend-mode: screen;
+  filter: saturate(0.9) contrast(1.05);
+}
+

@@ -1,0 +1,26 @@
+# Env files (secrets)
+.env
+.env.*
+backend/.env
+frontend/.env
+
+# Python
+.venv/
+**/.venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Frontend build output
+frontend/dist/
+**/dist/
+
+# Logs
+*.log
+
+# Generated assets (keep placeholder only)
+backend/generated/*
+!backend/generated/.gitkeep
