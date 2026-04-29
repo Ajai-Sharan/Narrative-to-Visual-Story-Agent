@@ -6,29 +6,29 @@ Turn a free-form story into a director-style storyboard, and generate a visual a
 
 ```mermaid
 flowchart TD
-  U[User] -->|Enter story + seed\nClick "Generate Visual Story"| FE[Frontend (React + Vite)\n`frontend/src/App.jsx`]
+  U[User] -->|Enter story + seed<br/>Click Generate Visual Story| FE[Frontend (React + Vite)<br/>frontend/src/App.jsx]
 
-  FE -->|POST /generate-story\n{ story_text, seed, generate_visuals:true }| API[Backend API (FastAPI)\n`backend/main.py`]
+  FE -->|POST /generate-story<br/>(story_text, seed, generate_visuals=true)| API[Backend API (FastAPI)<br/>backend/main.py]
 
-  API -->|Validate + normalize request| VAL[Pydantic models\nGenerateStoryRequest]
+  API -->|Validate + normalize request| VAL[Pydantic models<br/>GenerateStoryRequest]
 
-  VAL -->|Generate scene script| LLM[GitHub Models (Azure AI Inference)\nChatCompletionsClient\nModel: openai/gpt-4.1 (env override)]
-  LLM -->|JSON: {title, scenes[]}\n(setting, dialogue, action, visual_prompt)| SCRIPT[StoryScript\n(5–10 scenes)]
+  VAL -->|Generate scene script| LLM[GitHub Models (Azure AI Inference)<br/>ChatCompletionsClient<br/>Model: openai/gpt-4.1 (env override)]
+  LLM -->|Script JSON (title, scenes[])<br/>setting, dialogue, action, visual_prompt| SCRIPT[StoryScript<br/>(5–10 scenes)]
 
-  SCRIPT -->|If generate_visuals == true\nFor each scene.visual_prompt| HF[Hugging Face Inference Provider\nInferenceClient\ntext_to_video (CogVideoX-5b default)]
+  SCRIPT -->|If generate_visuals == true<br/>For each scene.visual_prompt| HF[Hugging Face Inference Provider<br/>InferenceClient<br/>text_to_video (CogVideoX-5b default)]
 
-  HF -->|MP4 bytes (with retries / cold-start handling)| SAVE[Save asset to disk\n`backend/generated/<uuid>.mp4`]
-  SAVE -->|Return URL| STATIC[StaticFiles mount\nGET `/generated/<file>`]
+  HF -->|MP4 bytes (with retries / cold-start handling)| SAVE[Save asset to disk<br/>backend/generated/uuid.mp4]
+  SAVE -->|Return URL| STATIC[StaticFiles mount<br/>GET /generated/{file}]
 
-  STATIC --> RESP[API Response\n{ script, assets[{scene_number,type,url,content_type}] }]
+  STATIC --> RESP[API Response<br/>script + assets[]]
   RESP --> FE
 
-  FE -->|Render timeline cards| UI[Storyboard UI\nScenes + prompts + video player]
+  FE -->|Render timeline cards| UI[Storyboard UI<br/>Scenes + prompts + video player]
   UI --> U
 
   %% optional operational bits
   API --> HEALTH[GET /health]
-  API --> KEEPALIVE[Background self-ping thread\n(Optional: Render keep-warm)]
+  API --> KEEPALIVE[Background self-ping thread<br/>(Optional: Render keep-warm)]
   KEEPALIVE --> HEALTH
 ```
 
