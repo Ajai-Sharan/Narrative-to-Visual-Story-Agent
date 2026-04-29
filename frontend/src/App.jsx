@@ -134,7 +134,9 @@ export default function App() {
   }, [isLoading]);
 
   async function onGenerate(overrideStoryText) {
-    const promptText = (overrideStoryText ?? storyText).trim();
+    const textToUse =
+      typeof overrideStoryText === "string" ? overrideStoryText : storyText;
+    const promptText = (textToUse ?? "").trim();
     if (!promptText) return;
     setError("");
     setResult(null);
@@ -365,7 +367,7 @@ export default function App() {
                 Clear
               </button>
               <button
-                onClick={onGenerate}
+                onClick={() => onGenerate()}
                 disabled={isLoading || !storyText.trim()}
                 className={classNames(
                   "group relative overflow-hidden rounded-2xl px-4 py-2 text-sm font-semibold text-white",
