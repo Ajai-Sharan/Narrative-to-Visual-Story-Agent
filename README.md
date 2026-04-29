@@ -131,5 +131,5 @@ Open:
 The backend exposes `GET /health` and (optionally) can self-ping to reduce idle sleep during demos.
 For extra reliability, you can also use an external uptime monitor to hit:
 
-- `https://<your-render-service>.onrender.com/health`
+- `https://narrative-to-visual-story-agent.onrender.com/health`
 
